@@ -36,7 +36,7 @@ namespace ga4
     ' the function will return `invalid`.
     function parseUtmParams(keyMap as object, utmParams as object) as dynamic
         parsed = {}
-        
+
         for each item in keyMap.items()
             if (utmParams[item.key] = invalid)
                 return invalid
