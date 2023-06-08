@@ -1,0 +1,21 @@
+import "pkg:/source/utils/ga4.bs"
+
+sub init()
+    m.button = m.top.createChild("Button")
+
+    m.button.update({
+        text: "Send event button_pressed",
+        translation: [100, 100]
+    })
+
+    m.button.observeField("buttonSelected", "handleButtonSelected")
+
+    m.button.setFocus(true)
+
+    m.buttonPressedTimes = 0
+end sub
+
+sub handleButtonSelected()
+    m.buttonPressedTimes += 1
+    ga4.logEvent("button_pressed", { times: m.buttonPressedTimes })
+end sub

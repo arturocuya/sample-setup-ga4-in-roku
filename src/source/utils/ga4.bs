@@ -1,0 +1,62 @@
+namespace ga4
+    ' Initializes and starts the `ga4` global node.
+    sub initialize(launchArgs as object)
+        m.global.setField("ga4", CreateObject("roSGNode", "GoogleAnalytics"))
+
+        debugModeEnabled = (launchArgs.analyticsDebug = "true") ?? false
+        customArgs = {
+            debug_mode: debugModeEnabled
+        }
+
+        ' You might want to change the keys here if your business
+        ' configures ads with different utm params.
+        keyMap = {
+            utm_source: "cs",
+            utm_medium: "cm",
+            utm_campaign: "cn",
+            utm_term: "ck"
+        }
+
+        utmParams = ga4.parseUtmParams(keyMap, launchArgs)
+
+        if (utmParams <> invalid)
+            customArgs.append(utmParams)
+        end if
+
+        m.global.ga4@.initialize({
+            measurementId: "<your-measurement-id>",
+            appName: "ga4.arturocuya.com",
+            customArgs: customArgs
+        })
+        m.global.ga4@.start()
+    end sub
+
+    ' Parses the UTM params to the format GA4 accepts.
+    ' If any of the keys in the provided keyMap is not present,
+    ' the function will return `invalid`.
+    function parseUtmParams(keyMap as object, utmParams as object) as dynamic
+        parsed = {}
+        
+        for each item in keyMap.items()
+            if (utmParams[item.key] = invalid)
+                return invalid
+            end if
+
+            parsed[item.value] = utmParams[item.key]
+        end for
+
+        return parsed
+    end function
+
+    ' Logs an event to GA4. Returns true if the event was logged.
+    function logEvent(eventName as string, params = {} as object) as boolean
+        if (m.global.ga4 = invalid)
+            ? `[ANALYTICS] Could not send event ${eventName} because global ga4 node is invalid.`
+            return false
+        end if
+
+        m.global.ga4@.logEvent(eventName, params)
+
+        return true
+    end function
+end namespace

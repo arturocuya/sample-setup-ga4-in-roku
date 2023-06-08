@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "brightscript",
+            "request": "launch",
+            "stopOnEntry": false,
+            "enableDebuggerAutoRecovery": false,
+            "stopDebuggerOnAppExit": false,
+            "rootDir": "${workspaceFolder}/dist/build",
+            "preLaunchTask": "build",
+            "name": "Launch setup-ga4-example (dev)",
+            "injectRdbOnDeviceComponent": true
+        },
+        {
+            "type": "brightscript",
+            "request": "launch",
+            "stopOnEntry": false,
+            "enableDebuggerAutoRecovery": false,
+            "stopDebuggerOnAppExit": false,
+            "rootDir": "${workspaceFolder}/dist/build",
+            "preLaunchTask": "build-prod",
+            "name": "Launch setup-ga4-example (prod)"
+        }
+    ]
+}

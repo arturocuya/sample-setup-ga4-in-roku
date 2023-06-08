@@ -1,0 +1,30 @@
+sub main(launchArgs as object)
+    screen = CreateObject("roSGScreen")
+    m.port = CreateObject("roMessagePort")
+    screen.setMessagePort(m.port)
+
+    m.global = screen.getGlobalNode()
+    ' The 3rd parameter sets the `alwaysNotify` parameter to false.
+    m.global.addField("ga4", "node", false)
+
+    screen.CreateScene("MainScene")
+    screen.show()
+
+    ' The following comment is to enable the SceneGraph inspector
+    ' on the VSCode BrightScript plugin.
+
+    ' vscode_rdb_on_device_component_entry
+
+
+    ga4.initialize(launchArgs)
+
+    while(true)
+        msg = wait(0, m.port)
+        msgType = type(msg)
+        if (msgType = "roSGScreenEvent")
+            if (msg.isScreenClosed())
+                return
+            end if
+        end if
+    end while
+end sub
